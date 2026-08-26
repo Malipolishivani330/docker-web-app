@@ -2,7 +2,8 @@ name: Docker CI/CD Pipeline
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   build:
@@ -18,14 +19,9 @@ jobs:
       - name: Run Docker container
         run: docker run -d -p 8080:80 --name docker-web-container docker-web-app
 
-      - name: Check running containers
-        run: docker ps -a
-
-      - name: Check container logs
-        run: docker logs docker-web-container
-
       - name: Wait for application
-        run: sleep 5
+        run: sleep 10
 
       - name: Verify application
-        run: curl -v http://localhost:8080
+        run: |
+          curl --retry 5 --retry-delay 2 --retry-connrefused --fail http://localhost:8080
