@@ -1,0 +1,26 @@
+name: Docker CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t docker-web-app .
+
+      - name: Run Docker container
+        run: docker run -d -p 8080:80 --name docker-web-container docker-web-app
+
+      - name: Verify application
+        run: curl --fail http://localhost:8080
