@@ -23,3 +23,4 @@ jobs:
 
       - name: Verify application
         run: curl --fail http://localhost:8080
+     
